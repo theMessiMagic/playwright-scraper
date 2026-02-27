@@ -1,0 +1,27 @@
+name: Daily Playwright Scraper
+
+on:
+  schedule:
+    - cron: '30 14 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies 24f3004898@ds.study.iitm.ac.in
+        run: |
+          npm install
+          npx playwright install --with-deps
+
+      - name: Run scraper
+        run: node scrape.js
