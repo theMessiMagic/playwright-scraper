@@ -13,15 +13,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies 24f3004898@ds.study.iitm.ac.in
         run: |
-          npm install
+          npm ci
           npx playwright install --with-deps
 
       - name: Run scraper
         run: node scrape.js
+
+
+
+        
