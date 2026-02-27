@@ -15,8 +15,11 @@ const { chromium } = require('playwright');
 
     const content = await page.textContent("body");
 
-    const matches = content.match(/\d+/g);
-    const numbers = matches ? matches.map(n => parseInt(n, 10)) : [];
+    const matches = content.match(/\d+/g) || [];
+
+    const numbers = matches
+      .map(n => parseInt(n, 10))
+      .filter(n => Number.isFinite(n));
 
     const pageTotal = numbers.reduce((sum, value) => sum + value, 0);
 
