@@ -11,15 +11,16 @@ const { chromium } = require('playwright');
     console.log(`Visiting: ${url}`);
 
     await page.goto(url);
-    await page.waitForLoadState("networkidle");
+    await page.waitForSelector("body");
 
-    const content = await page.textContent("body");
-
-    const matches = content.match(/\d+/g) || [];
-
-    const numbers = matches
-      .map(n => parseInt(n, 10))
-      .filter(n => Number.isFinite(n));
+    // Extract ONLY visible numbers (split by whitespace)
+    const numbers = await page.evaluate(() => {
+      return document.body.innerText
+        .trim()
+        .split(/\s+/)
+        .map(n => Number(n))
+        .filter(n => !isNaN(n));
+    });
 
     const pageTotal = numbers.reduce((sum, value) => sum + value, 0);
 
